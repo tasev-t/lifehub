@@ -1,0 +1,61 @@
+==========================================
+       HISTORIE SPOLUPRÁCE A VÝVOJE PROJEKTU
+           LifeHub – Osobní životní asistent
+==========================================
+
+1. ZADÁNÍ
+---------
+Na začátku jsme se rozhodli vytvořit modulární webovou aplikaci – LifeHub – určenou k osobní správě života. Projekt by měl obsahovat oddělené doménové aplikace (users, nutrition, finance, pets, common) a integrované API endpointy, které umožní snadnou komunikaci mezi těmito moduly. Zadání zahrnovalo:
+- Vytvoření Django projektu s čistou a přehlednou modulární strukturou.
+- Implementaci autentizace pomocí JWT.
+- Nastavení základních endpointů, například pro správu uživatelského profilu a pro načtení changelogu (historie změn).
+- Automatizaci opakovaných úkonů (např. pomocí .bat skriptů).
+
+2. NAŠE SPOLUPRÁCE A POSTUP
+---------------------------
+Během naší spolupráce jsme pracovali postupně:
+- **Základ projektu:** Vytvořili jsme Django projekt a nastavili virtuální prostředí. Ujistili jsme se, že Python a potřebné balíčky jsou nainstalovány.
+- **Modulární struktura:** Rozdělili jsme projekt do samostatných aplikací pro každou doménu (users, nutrition, finance, pets, common). Do hlavní URL konfigurace jsme zapojili všechny tyto moduly.
+- **Řešení chyb:** 
+  - Řešili jsme chyby typu "No module named 'corsheaders'" instalací chybějícího balíčku.
+  - Upravili jsme URL konfigurace jednotlivých modulů, aby obsahovaly platné `urlpatterns` a vyřešili problémy s kruhovými importy.
+  - Implementovali jsme endpoint pro changelog v aplikaci common, který načítá obsah souboru CHANGELOG.md a vrací jej jako JSON.
+- **Automatizace:** Vytvořili jsme .bat skripty pro spuštění migrací a serveru, což usnadnilo opakované spouštění příkazů bez nutnosti manuálního zadávání.
+
+3. KLÍČOVÉ PROBLÉMY A JEJICH ŘEŠENÍ
+----------------------------------
+a) **Neznámý příkaz "django-admin":**  
+   - Problém: Příkaz nebyl rozpoznán.
+   - Řešení: Vytvoření a aktivace virtuálního prostředí, instalace Django pomocí pip.
+
+b) **Chyby při importech a prázdné URL konfigurace:**  
+   - Problém: Některé soubory (např. v modules pets a finance) neobsahovaly `urlpatterns`, což způsobovalo chyby.
+   - Řešení: Do těchto souborů jsme přidali prázdné seznamy `urlpatterns = []` nebo základní URL vzory, aby Django našel potřebné konfigurace.
+
+c) **Spouštění příkazů a .bat skripty:**  
+   - Problém: Příkazy nebyly spuštěny ve správném adresáři nebo s aktivovaným virtuálním prostředím.
+   - Řešení: Vytvořili jsme .bat skripty, které ověřují dostupnost Pythonu, nastavují správný adresář a spouštějí příkazy (makemigrations, migrate, runserver).
+
+d) **Integrace endpointu pro changelog:**  
+   - Problém: Potřeba mít přehledný, dynamický záznam historie změn.
+   - Řešení: V aplikaci common jsme implementovali view, které načítá obsah souboru CHANGELOG.md, a endpoint, který tento obsah vrací jako JSON. Navíc jsme zavedli možnost dynamicky doplňovat aktuální datum a čas pro demonstraci změn.
+
+4. ZÁVĚR A DOPORUČENÍ
+----------------------
+- **Historie a dokumentace:** Udržujte podrobnou a průběžnou dokumentaci (CHANGELOG.md, Project_History.txt) všech významných změn a rozhodnutí. Tato dokumentace je klíčová pro budoucí rozvoj a onboarding nových členů týmu.
+- **Modulární přístup:** Pokračujte v rozšiřování projektu pomocí oddělených aplikací. Každá aplikace by měla mít vlastní logiku, což usnadní údržbu a další rozvoj.
+- **Automatizace:** Používejte skripty (.bat nebo shell) pro opakované úkony a zvažte integraci nástrojů CI/CD, které vám automaticky generují části changelogu a monitorují stav projektu.
+- **Transparentnost spolupráce:** Dokumentace naší spolupráce, jak je zachycena v tomto souboru, slouží jako vodítko pro další vývoj. Udržujte ji aktuální, aby byl celý proces vývoje transparentní a dobře zdokumentovaný.
+
+5. DALŠÍ KROKY
+--------------
+- **Pokračujte v implementaci dalších modulů:** Po dokončení základní kostry se pusťte do vývoje jednotlivých aplikací (např. uživatelská autentizace, modul stravy, finance atd.).
+- **Integrace frontendu:** Následně přesuňte pozornost k propojení backendu s frontendovou aplikací (React, Material UI).
+- **Pravidelná aktualizace dokumentace:** Po každém významném kroku aktualizujte tento soubor, aby byl přehledný a poskytoval kompletní historii spolupráce.
+
+==========================================
+        KONEČNÉ DOPORUČENÍ:
+==========================================
+Tento dokument představuje cenný zdroj informací, který vám pomůže sledovat vývoj projektu, získat přehled o řešených problémech a přijatých rozhodnutích, a zároveň poslouží jako vodítko pro další spolupráci. Pravidelná aktualizace a systematická dokumentace vám ušetří čas a usnadní rozvoj projektu v budoucnu.
+
+==========================================

@@ -1,0 +1,43 @@
+**Název projektu:** Osobní životní asistent (modulární webová aplikace)
+
+---
+
+**Výchozí situace:**
+Začínám zcela od nuly. Cílem je vybudovat silný, modulární a snadno rozšiřitelný základ aplikace pro osobní správu života, ve které bude každý modul samostatný a nebude zasahovat do ostatních.
+
+---
+
+**Vize:**
+Webová aplikace, která uživateli poskytne jednotné prostředí pro správu různých oblastí jeho života: strava, finance, majetek, zvířata, časem možná i další. Obsah bude personalizovaný dle přihlášeného uživatele. Důležitý bude přehled, jednoduchost a možnost budoucího rozšiřování.
+
+---
+
+**Jádro projektu (1. etapa):**
+- Modul pro **autentizaci a správu uživatele** (přihlášení, registrace, JWT, osobní/rodinný mód)
+- Základní frontendový layout: hlavička, menu, dashboard (zeď)
+- První modul: **Strava** (recepty, ingredience, jídelníčky)
+
+---
+
+**Technologie:**
+- Backend: Python (Django + DRF)
+- Frontend: React + Material UI (nebo jiný jednoduchý framework)
+- Autentizace: JWT (např. SimpleJWT)
+- Komunikace: REST API
+
+---
+
+**Prompty pro AI (jiné vlákno):**
+
+1. _"Pomoz mi vytvořit Django projekt s modulární strukturou, kde každá doména (např. uzivatel, strava, finance) bude samostatná app."_
+2. _"Navrhni modely pro uživatelský profil, včetně možnosti přepnout mezi osobním a rodinným profilem."_
+3. _"Vytvoř základ pro modul 'Strava' v Django: modely pro recepty, ingredience, jídelníček."_
+4. _"Jak implementovat JWT autentizaci v Django REST Frameworku krok za krokem?"
+5. _"Navrhni frontendovou strukturu React aplikace s přehledným layoutem a routami pro jednotlivé moduly."_
+6. _"Jak elegantně propojit frontend a backend pomocí JWT a Axios v Reactu?"
+7. _"Pomoz mi vytvořit dashboard (Zeď), který zobrazí shrnutí z modulů a slouží jako rozcestník."
+
+---
+
+Tento soubor slouží jako shrnutí výchozí situace a společný základ pro všechny budoucí požadavky v jiných vláknech.
+

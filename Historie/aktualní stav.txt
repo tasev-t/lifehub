@@ -1,0 +1,32 @@
+Díky, pustím se do toho. Projdu dosavadní historii vývoje projektu LifeHub a identifikuji, ve které části vývoje jste skončili podle plánu – a co konkrétně je další logický krok pro pokračování.
+
+Hned se ozvu s přehledem dalšího postupu.
+
+# Aktuální stav vývoje projektu LifeHub a další kroky
+
+## Poslední dokončené kroky
+- **Modulární kostra backendu:** Byla vytvořena základní struktura Django projektu se samostatnými aplikacemi *users*, *nutrition* (Strava), *finance* a *pets*, včetně jejich zapojení do hlavní konfigurace URL. Vyřešily se počáteční chyby s importy a chybějícími `urlpatterns` v nových modulech.  
+- **Autentizace a uživatelé:** Do projektu byla integrována autentizace pomocí JWT (nasazen balíček SimpleJWT v Django REST Framework). Existuje základní endpoint pro uživatelský profil (`/api/users/profile/`), zatím však jen s testovací odpovědí.  
+- **Společné API endpointy:** Implementovány pomocné endpointy v modulu *common* – zejména **`/api/common/changelog/`** pro získání obsahu souboru *CHANGELOG.md* (historie změn) a **`/api/common/snapshot/`** pro výpis aktuální struktury souborů projektu. Tyto funkce zlepšují přehled o verzích a usnadňují diagnostiku.  
+- **Modul Strava – první část:** V doménové aplikaci *nutrition* byl vytvořen model **Recipe** (recept) spolu s odpovídajícím serializerem a jednoduchým API view pro výpis receptů (GET seznam receptů). Tím byl nastartován první funkční modul – Strava. (Modely pro ingredience či jídelníčky zatím přidány nebyly.)  
+- **Automatizace běžných úkolů:** Pro vývoj a nasazení byly přidány skripty (Windows *.bat*) pro snadné provedení migrací a spuštění serveru. Díky nim lze projekt spustit nebo aktualizovat databázi jedním krokem, což urychluje opakované činnosti.  
+
+## Porovnání aktuálního stavu s původním plánem
+Plánované klíčové body první etapy (dle dokumentu *Projekt 2.0 start.txt*) a jejich naplnění:
+
+| Plánovaná funkcionalita (1. etapa)                     | Stav realizace                                          |
+| ------------------------------------------------------- | ------------------------------------------------------- |
+| **Modulární struktura projektu** (oddělené aplikace)    | **Hotovo** – Projekt rozdělen na *users, nutrition, finance, pets, common*. |
+| **JWT autentizace + uživatelé** (přihlášení, profily, rodinný mód) | **Částečně hotovo** – JWT autentizace je integrována (tokeny fungují). Základ uživatelského profilu existuje, ale **registrace uživatele** a **rodinný profil** zatím nejsou implementovány. |
+| **Základní frontend (React)** – hlavička, menu, dashboard (*„Zeď“*) | **Nezahájeno** – Frontend aplikace (React + Material UI) dosud nebyl vytvořen; UI rozvržení a dashboard zatím chybí. |
+| **První modul: Strava** (recepty, ingredience, jídelníčky) | **Částečně hotovo** – Implementován model **Recept** + endpoint pro výpis receptů. **Ingredience a jídelníček** zatím neimplementovány. |
+| **Dokumentace změn** (CHANGELOG, historie)              | **Hotovo** – Zavedeno logování změn (*CHANGELOG.md*) a vytvořena souhrnná dokumentace průběhu vývoje (*Historie_spolupráce*). |
+| **Automatizační skripty** (migrace, server)             | **Hotovo** – Přidány skripty pro migrace a spuštění serveru (usnadňují opakované úkoly). |
+
+> **Poznámka:** Endpointy pro *CHANGELOG* a *snapshot* nebyly výslovně zmíněny v původním plánu, ale byly doplněny v rámci prvotní fáze pro zvýšení přehledu o projektu. Moduly **Finance** a **Pets** jsou zatím jen založeny prázdné – jejich obsah je určen až pro další etapy vývoje.
+
+## Návrh dalších kroků vývoje
+- **Dokončení správy uživatelů:** Implementovat **registraci nových uživatelů** (vytvořit API endpoint pro vytvoření účtu) a rozšířit model/profil uživatele o podporu **rodinného režimu** (umožnit přepínat mezi osobním a rodinným profilem, případně sdílet data v rámci rodiny). Tím se naplní požadavek na víceuživatelské využití aplikace. Dále prověřit autentizační tok – např. zapojit endpointy pro získání/obnovení JWT tokenu (pokud již nejsou nastaveny) pro kompletní login/logout flow.  
+- **Rozšíření modulu Strava:** Doplnit zbývající plánované funkce prvního modulu. Konkrétně vytvořit model **Ingredient** (ingredience) a model **MealPlan/Jídelníček**, včetně vztahů (např. propojení receptů s ingrediencemi a receptů s jídelníčky). Implementovat k nim API endpointy (CRUD operace pro přidávání, úpravu a získávání receptů, ingrediencí i jídelníčků). Tím se modul Strava stane plnohodnotným nástrojem pro správu receptů a stravovacích plánů.  
+- **Zahájení prací na frontendu:** Vytvořit základ React aplikace a propojit ji s backendem. Nejprve nastavit projekt (React + Material UI) a implementovat společné prvky UI – **hlavičku, navigační menu a prázdný dashboard**. Následně realizovat klíčové obrazovky pro dosavadní funkce: například stránku pro seznam receptů napojenou na API modulu Strava a přihlašovací formulář využívající JWT autentizaci. Tím získá projekt viditelné uživatelské rozhraní a lze průběžně testovat end-to-end funkčnost (login -> zobrazení dat).  
+- **Další modul(y) podle plánu:** Po dokončení jádrových částí (uživatelé, první modul a UI) je logickým pokračováním rozšířit LifeHub o další domény z původní vize. Dalším krokem může být implementace modulu **Finance** (správa financí) nebo **Majetek/Pets** (evidence majetku či péče o zvířata) jako samostatné Django aplikace. Každý takový modul by zahrnoval definici modelů a API pro danou oblast a následné zapojení do frontendové aplikace (nové sekce v menu, stránky pro práci s daty daného modulu). Tím se projekt postupně přiblíží k naplnění vize jednotného prostředí pro všechny oblasti osobního života.

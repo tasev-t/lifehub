@@ -1,0 +1,49 @@
+# ✨ Projektový prompt: Shrnutí vývoje a spolupráce
+
+Tento prompt použij pro vygenerování dokumentu shrnujícího spolupráci a vývoj projektu. Je určen pro Markdown formát a má sloužit jako podklad pro repozitář, interní dokumentaci, onboarding nebo retrospektivu.
+
+---
+
+## 📝 Prompt:
+
+Vytvoř mi dokument ve formátu **Markdown**, který shrnuje vývoj a spolupráci na projektu **„[Název projektu]“**.
+
+Struktura dokumentu:
+
+1. **Úfvod**
+   - Stručný popis cíle projektu a jeho hlavní funkce.
+   - Kontext spolupráce a účel dokumentu.
+
+2. **Architektura a vývojový plán**
+   - Použité technologie, struktura backendu/frontendu.
+   - Architektonická rozhodnutí a modularita.
+
+3. **Průběh spolupráce a milníky**
+   - Vývojové fáze, klíčové iterace a verze.
+
+4. **Řešené problémy a jejich řešení**
+   - Technické problémy, implementační zádrhely.
+   - Jaká řešení byla zvolena a proč.
+
+5. **Zpřístupněné funkcionality (API, skripty, helpery)**
+   - Seznam funkčních endpointů nebo skriptů.
+   - Jak fungují, co vracejí.
+
+6. **Doporučení pro další vývoj a dokumentaci**
+   - CI/CD, changelogy, onboarding, testování, vizualizace.
+
+7. **Závěr**
+   - Shrnutí přínosu spolupráce, důležitost dokumentace.
+
+Volitelně:
+- Zařaď jednoduchou **časovou osu** nebo timeline klíčových bodů.
+- Zvýrazni verze nebo publikované funkce.
+
+---
+
+## 📂 Použití:
+- Pro výstup do `project_history.md`
+- Součást repozitáře nebo interní wiki
+- Příloha ke zprávě o stavu projektu
+- Onboarding nových členů týmu
+

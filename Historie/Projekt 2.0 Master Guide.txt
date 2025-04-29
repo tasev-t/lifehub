@@ -1,0 +1,120 @@
+Výborně. Připravím komplexní dokument "Projekt 2.0 Master Guide" – strukturovaný přehledný plán rozvoje projektu LifeHub.
+
+Bude obsahovat:
+- Stručné a praktické zadání každého bodu.
+- Připravené prompty pro spolupráci s AI na každém kroku.
+- Navržené pořadí plnění úkolů (priority).
+- Profesionální pokyny vedené způsobem, aby nebylo nutné se vracet ke zbytečným dotazům.
+- Přehlednou strukturu s jasným rozčleněním a minimem vágních instrukcí.
+
+Pustím se do tvorby a jakmile bude dokument hotový, dám ti vědět k nahlédnutí!
+
+# Projekt 2.0 Master Guide
+
+LifeHub je webová aplikace typu "osobní životní asistent", která uživateli poskytuje jednotné prostředí pro správu různých oblastí jeho života (strava, finance, majetek, domácí mazlíčci aj.). Cílem projektu je nabídnout přehlednou, modulární a snadno rozšiřitelnou platformu, která umožní v budoucnu přidávat další funkčnosti podle potřeb uživatele. **Projekt 2.0 Master Guide** slouží jako ucelený plán vývoje tohoto projektu. Dokument rozděluje práci do několika klíčových oblastí (moduly, bezpečnost, API, frontend – dashboard, notifikace, testování atd.) a pro každou z nich stanovuje konkrétní zadání a postup. Každá sekce obsahuje také připravené *prompty* – konkrétní dotazy, které můžeš přímo položit AI, aby pomohlo s realizací daného kroku. Tento Master Guide tě provede krok za krokem celým procesem vývoje a poskytne jasné vedení, abys nemusel zdlouhavě hledat další postup.
+
+## Plán priorit
+
+Níže je nastíněn doporučený postup realizace projektu – co udělat nejdříve a co následně:
+
+1. **Dokončení správy uživatelů (backend)** – Ověřit kompletní JWT workflow (registrace, přihlášení, vydání access a refresh tokenu) a implementovat rodinný profil (možnost přepínat mezi osobním a rodinným režimem, základ sdílení dat v rámci rodiny).
+2. **Rozšíření modulu Strava (backend)** – Přidat zbývající datové modely a funkce: zejména model **Ingredient** (ingredience) a **MealPlan** (jídelníček) včetně příslušných API endpointů (CRUD operace). Tím se modul Strava stane plně použitelným pro správu receptů a plánování jídel.
+3. **Zahájení práce na frontendu (React)** – Vytvořit skeleton React aplikace s Material UI: zavést routování mezi stránkami, základní layout (hlavička, navigace, hlavní obsah) a připravit přihlašovací stránku. Propojit frontend s backendem přes REST API (pomocí JWT autentizace v HTTP požadavcích).
+4. **Zavedení testů a CI/CD** – Napsat první jednotkové testy pro backend (např. test registrace uživatele, přidání nové ingredience) a nastavit Continuous Integration (např. pomocí GitHub Actions) pro automatické spouštění testů při každé změně kódu. Tím zajistíme stabilitu projektu při dalším vývoji.
+5. **Dokumentace a snapshoty** – Průběžně aktualizovat dokumentaci (např. tento Master Guide a changelog) po každém významném kroku. Využít nástroje pro automatické vytváření snapshotů projektu k archivaci stavu kódu v čase, což pomůže při ladění a sledování pokroku.
+
+## Architektura a moduly aplikace
+
+Projekt LifeHub je navržen modulárně. Backend je rozdělen do samostatných Django aplikací (modulů) podle doménové oblasti: například **users** (uživatelé), **nutrition** (strava), do budoucna **finance**, **pets** (domácí mazlíčci), a společný modul **common** pro sdílené funkce. Tato modulární architektura zlepšuje čitelnost kódu a umožňuje nezávislý vývoj a údržbu jednotlivých částí. Každý modul má vlastní datové modely, logiku (views/serializery) a API routy, které jsou začleněny do hlavního API rozhraní (např. `path('api/users/', include('users.urls'))` v `urls.py`). Níže jsou uvedeny hlavní současné a plánované moduly:
+
+- **Uživatelé a autentizace** – Modul spravující uživatelské účty, registraci, přihlášení a profil. V projektu je použit vlastní uživatelský model (např. `UserProfile` dědící od `AbstractUser`), který rozšiřuje standardní účet o atributy jako *režim profilu* (osobní vs. rodinný) a vazbu na objekt *FamilyGroup* (rodinná skupina). Cílem je umožnit uživateli přepínat mezi osobním a rodinným režimem, což připraví půdu pro sdílení dat mezi členy rodiny. V této fázi je třeba ověřit funkčnost všech potřebných endpointů (registrace, přihlášení, získání/aktualizace profilu) a dokončit logiku pro rodinný profil (vytváření rodinné skupiny, přiřazení uživatele do skupiny, přepnutí režimu).
+- **Strava (Recepty & Jídelníčky)** – Modul pro správu kuchařských receptů, ingrediencí a plánování jídel. Zahrnuje model **Recipe** (recept) s atributy jako název, popis, seznam ingrediencí, model **Ingredient** (ingredience) s názvem a případně nutričními hodnotami, a model **MealPlan** (jídelníček), který kombinuje recepty do denních či týdenních plánů. Základ modulu (např. model Recipe a jeho jednoduché API) již existuje; nyní je potřeba doplnit chybějící části: vytvořit modely Ingredient a MealPlan, zajistit jejich propojení s recepty (např. vazba mnoho-mnoho mezi Recipe a Ingredient, vazba MealPlan na více Recipe) a implementovat kompletní sadu API endpointů pro CRUD operace nad těmito entitami. Do budoucna lze uvažovat i o rozšiřujících funkcích, jako je generátor nákupního seznamu na základě jídelníčku.
+- **Finance** – (Plánovaný modul) Bude sloužit ke správě osobních financí uživatele. Představuje evidenci příjmů a výdajů, rozpočtů, případně statistiky úspor. Návrh může zahrnovat modely jako **Expense** (výdaj), **Income** (příjem), kategorie transakcí a měsíční rozpočty. Tento modul bude opět samostatná Django aplikace s vlastní sadou API endpointů (např. CRUD operace pro výdaje a příjmy). Implementace modulu Finance přijde na řadu poté, co budou stabilizovány základní moduly (Uživatelé, Strava).
+- **Majetek** – (Plánovaný modul) Modul pro evidenci majetku a vybavení domácnosti. Mohl by obsahovat modely pro různé položky majetku (nemovitosti, vozidla, elektronika apod.), jejich hodnotu, datum pořízení, údržbu atd. Účelem je mít přehled o majetku uživatele na jednom místě. Opět se bude jednat o samostatnou aplikaci s odpovídajícími tabulkami v databázi a API rozhraním pro správu těchto dat.
+- **Domácí mazlíčci** – (Plánovaný modul) Tento modul poskytne funkcionality pro majitele zvířecích mazlíčků. Může zahrnovat správu informací o zvířeti (druh, jméno, věk), veterinární záznamy, plánování krmení či procházek, případně připomenutí očkování. Stejně jako ostatní moduly bude izolován, aby úpravy týkající se mazlíčků neovlivňovaly jiné části aplikace.
+
+**Ukázkové dotazy na AI:**
+
+- "Pomoz mi vytvořit Django projekt s modulární strukturou, kde každá doména (uživatelé, strava, finance) bude samostatná aplikace."
+- "Navrhni modely pro uživatelský profil včetně možnosti přepnutí mezi osobním a rodinným profilem (rodinným účtem)."
+- "Vytvoř základ pro modul 'Strava' v Django – navrhni modely pro Recept, Ingredienci a Jídelníček včetně jejich vzájemných vztahů."
+- "Jak přidat nový modul 'Finance' do stávajícího Django projektu (vytvoření aplikace, modelů, migrací a zapojení do URL rozhraní)?"
+
+## Bezpečnost aplikace
+
+Od počátku je kladen důraz na robustní zabezpečení aplikace. Zahrnuje to jak ochranu uživatelských účtů a dat, tak zabezpečení samotného API. Níže jsou shrnuty hlavní aspekty bezpečnosti a co je potřeba zajistit:
+
+- **Autentizace a správa účtů** – Pro ověřování uživatelů jsou využity standardní a ověřené nástroje: kombinace knihoven *django-allauth* a *dj-rest-auth* pro registraci a přihlašování uživatelů, doplněné o *Simple JWT* pro vydávání a správu JWT tokenů. Při registraci nového uživatele je vyžadován e-mail a heslo; díky integraci allauth lze snadno zapnout ověřování e-mailové adresy (zaslání potvrzovacího odkazu) a obnovu zapomenutého hesla. Hesla se nikdy neukládají v čitelné formě – framework je ukládá zahashovaná. Po přihlášení uživatel obdrží **access token** (krátkodobý) a **refresh token** (dlouhodobější pro obnovu přístupu); tyto tokeny slouží k autentizaci API požadavků bez nutnosti posílat přihlašovací údaje při každém požadavku.
+- **Autorizace a přístup k datům** – Veškeré citlivé API endpointy vyžadují přihlášení (nastaveno pomocí DRF permission tříd, typicky `IsAuthenticated`). Uživatel tak může přistupovat jen ke svým datům, případně k rodinným datům, pokud využívá rodinný profil. Sdílení dat v rodinném režimu bude řešeno tak, že určité záznamy (např. recepty, jídelníčky) budou označeny příslušností k *FamilyGroup*, a členové téže skupiny je uvidí ve svém přehledu. Na úrovni API se to projeví úpravou dotazů a filtrů (např. recepty vracet buď osobní, nebo rodinné). Dále jsou definovány role: běžný uživatel versus administrátor. Administrátor (superuser) má přístup k administrátorskému rozhraní Django a na některé speciální endpointy (viz níže), běžní uživatelé nikoli.
+- **Ochrana citlivých funkcí** – Některé části systému vyžadují dodatečnou ochranu. Například interní diagnostický endpoint `/api/common/snapshot/` (který vrací strukturu zdrojového kódu projektu) je zabezpečen pomocí `IsAdminUser`, aby jej nemohl zneužít nepovolaný uživatel. Dále je vhodné nastavit bezpečnostní hlavičky a CORS pravidla tak, aby API bylo přístupné pouze z povolených domén (např. domény frontendu). Pro produkční nasazení je nutností provozovat aplikaci pod HTTPS, aby tokeny nemohly být odposlechnuty. JWT tokeny mají relativně krátkou platnost (např. 5 minut pro access token) a pro udržení přihlášení slouží refresh token s delší platností (např. 24 hodin); tím se minimalizuje riziko zneužití odcizeného tokenu. Do budoucna lze uvažovat také o dvoufaktorové autentizaci pro citlivé účty, bude-li to potřeba pro zvýšení bezpečnosti.
+
+**Ukázkové dotazy na AI:**
+
+- "Jak implementovat JWT autentizaci v Django REST Frameworku krok za krokem pomocí balíčku SimpleJWT?"
+- "Jak nastavit v Django REST Frameworku vlastní oprávnění (permissions), aby například v rodinném režimu měli uživatelé přístup i k datům své rodinné skupiny?"
+- "Jak nakonfigurovat django-allauth/dj-rest-auth tak, aby vyžadoval ověření e-mailové adresy při registraci uživatele a umožnil reset hesla přes e-mail?"
+
+## Backendové API
+
+Komunikace mezi frontendem a backendem probíhá pomocí REST API postaveného na Django REST Frameworku. Návrh API je rozdělen podle modulů a respektuje principy RESTful designu. Každý modul poskytuje vlastní sadu endpointů, obvykle následující konvenci CRUD (Create, Read, Update, Delete) pro hlavní entity modulu. 
+
+Aktuálně jsou k dispozici například tyto API endpointy:
+- **Uživatelé**: Registrace nového uživatele (`POST /api/users/register/`), přihlášení a získání tokenů (`POST /api/token/` pro získání access/refresh tokenu; `POST /api/token/refresh/` pro obnovu access tokenu), zobrazení a úprava profilu (`GET/PUT /api/users/profile/`).
+- **Strava**: Výpis všech receptů (`GET /api/nutrition/recipes/`), detail receptu (`GET /api/nutrition/recipes/{id}/`), vytvoření nového receptu (`POST /api/nutrition/recipes/`), úprava nebo smazání receptu (`PUT/PATCH/DELETE /api/nutrition/recipes/{id}/`). Podobné endpointy budou vytvořeny pro ingredience (`/api/nutrition/ingredients/...`) a jídelníčky (`/api/nutrition/mealplans/...`). Nechybí možnost filtrovat či stránkovat výsledky, což DRF umožňuje konfigurovat.
+- **Common (systémové)**: Získání changelogu aplikace (`GET /api/common/changelog/`) a již zmíněný administrátorský endpoint pro snapshot kódu (`GET /api/common/snapshot/`), který slouží hlavně pro vývojové účely.
+
+Jakmile přidáme modul Finance či další, přibydou obdobné endpointy pro jejich entity (např. `/api/finance/expenses/` pro výdaje). Při návrhu nových API je důležité držet konzistenci (např. pojmenování, struktura dat) s již existujícími endpointy, aby byl celý systém jednotný.
+
+**Co je potřeba udělat:** V této fázi vývoje je nutné dokončit všechny důležité endpointy modulu Strava (zejména ingredience a jídelníčky, viz výše). Dále se doporučuje integrovat nástroj pro API dokumentaci – například **OpenAPI/Swagger** – aby bylo možné snadno zobrazit a ověřit dostupné endpointy a jejich datové struktury. Po každé změně API by měla následovat aktualizace dokumentace. Rovněž je vhodné přidat testy pro kritické API funkce (např. ověřit, že nepřihlášený uživatel nedokáže vytvořit nový objekt, že validace formulářů funguje, apod.). 
+
+**Ukázkové dotazy na AI:**
+
+- "Napiš ukázkový ViewSet v Django REST Frameworku pro model Ingredient (včetně metod list, create, retrieve, update, delete)."
+- "Jak do Django REST Framework projektu přidat automaticky generovanou dokumentaci API (Swagger/OpenAPI)?"
+- "Navrhni API endpoint, který v modulu Strava vygeneruje nákupní seznam ingrediencí na základě zvoleného jídelníčku."
+
+## Frontend a Dashboard
+
+Pro frontend aplikace jsme zvolili moderní JavaScript stack – knihovnu **React** doplněnou o **Material UI** pro rychlé vytváření responsivního a vizuálně konzistentního uživatelského rozhraní. Frontend bude fungovat jako single-page aplikace, která komunikuje s backendovým API a uživateli poskytuje přívětivé rozhraní k funkcím LifeHubu. Základní kámen frontendové části tvoří **dashboard** (úvodní přehledová stránka) a navigace do jednotlivých modulů.
+
+- **Struktura aplikace a navigace** – React aplikace bude členěna do komponent a využije React Router pro navigaci mezi různými obrazovkami (stránkami). Globální layout zahrnuje horní lištu (header) s názvem aplikace a třeba uživatelským menu, boční navigační menu (sidebar) pro přepínání mezi moduly (Strava, Finance, atd.), a hlavní obsahovou oblast. Zpočátku nastavíme základní routy: veřejnou routu pro přihlášení/registraci a chráněné routy pro obsah aplikace dostupný jen přihlášeným uživatelům (dashboard, jednotlivé moduly).
+- **Autentizace na frontendu** – Pro přihlašování bude vytvořen jednoduchý formulář, který pošle přihlašovací údaje na API endpoint pro získání tokenu. Získaný JWT **access token** (a případně refresh token) se uloží na klientu (např. do paměti aplikace nebo bezpečně do localStorage). Všechny následné API požadavky z frontendu budou obsahovat v hlavičce HTTP tento token (typicky `Authorization: Bearer <token>`), aby server věděl, který uživatel je volá. Bude zapotřebí implementovat i logiku pro automatické obnovení tokenu, pokud vyprší – např. pomocí interceptoru v Axios knihovně, který při odpovědi 401 automaticky zkusí získat nový access token pomocí refresh tokenu. Tím zajistíme, že uživatel nebude muset každých několik minut znovu zadávat heslo.
+- **Dashboard (úvodní přehled)** – Po úspěšném přihlášení bude uživatel přesměrován na dashboard. Dashboard zobrazí shrnutí informací z různých modulů na jednom místě – například uvítání uživatele jménem, dále počet uložených receptů a třeba náhled posledního přidaného receptu, souhrn finanční bilance (pokud bude modul Finance aktivní), seznam nadcházejících událostí nebo úkolů (do budoucna, pokud přibude kalendář či úkolovník), atd. Dashboard tak slouží jako *rozcestník* i rychlý přehled. Z každého bloku (např. "Recepty") by měla vést možnost "více" do příslušného modulu.
+- **Postupné rozšiřování frontendové logiky** – Nejprve vytvoříme statický vzhled a základní komponenty (bez složité funkčnosti), poté je napojíme na reálná data z API. Například stránka receptů zpočátku může obsahovat jen text "Seznam receptů", ale následně do ní doplníme volání API pro získání seznamu receptů a vykreslíme je v přehledné tabulce či kartách. Podobně budeme postupovat pro další moduly. Díky modulárnímu návrhu backendu bude možné v frontendu načítat data z různých endpointů a zobrazovat je izolovaně v příslušných částech aplikace.
+
+**Ukázkové dotazy na AI:**
+
+- "Navrhni frontendovou strukturu React aplikace pro LifeHub, včetně rozvržení komponent (layout, header, menu) a nastavení rout pro moduly."
+- "Jak propojit React aplikaci s backendem pomocí JWT autentizace a knihovny Axios (např. kde ukládat token a jak nastavit Axios interceptory)?"
+- "Pomoz mi vytvořit Dashboard stránku v Reactu, která zobrazí shrnutí dat z různých modulů (např. počet receptů, poslední přidaný výdaj apod.) a nabídne odkazy do jednotlivých sekcí."
+- "Jak v React aplikaci zajistit automatické obnovení (refresh) JWT tokenu, když vyprší platnost access tokenu během používání aplikace?"
+
+## Notifikace (upozornění)
+
+Do ekosystému LifeHub chceme postupně začlenit také systém notifikací, který bude uživatele proaktivně upozorňovat na důležité události a úkoly. Tím se LifeHub posune od čistě pasivního přehledu dat k aktivní asistenci.
+
+- **Účel notifikací** – Notifikace rozšiřují funkcionalitu aplikace o možnost informovat uživatele, aniž by musel aplikaci aktivně kontrolovat. Může jít o připomenutí (např. "Dnes máš naplánováno cvičení" nebo "Dochází ti zásoby ingredience X"), upozornění na dosažení cíle ("Gratulujeme, tento týden jsi ušetřil 20% rozpočtu!") nebo systémové zprávy ("Byla vydána nová verze aplikace...").
+- **Formy notifikací** – Zpočátku budou pravděpodobně využity **e-mailové notifikace**, protože jsou jednodušší na implementaci (Django má vestavěnou podporu pro odesílání e-mailů). Do budoucna lze uvažovat také o **push notifikacích** pro mobilní zařízení nebo o interních notifikacích přímo v aplikaci (např. zobrazení ikony/badge a výpisu zpráv někde v UI). Volba technologie pro push notifikace by mohla padnout na služby typu Firebase Cloud Messaging nebo na Web Push API v kombinaci s pracovními procesy (Service Worker) pro PWA.
+- **Návrh a implementace** – Bude vytvořen modul notifikací. Zahrnovat bude model **Notification**, který ponese informace o zprávě (text), typu notifikace (e-mail, interní), uživateli (nebo skupině uživatelů), časovém naplánování a stavu (např. zda byla notifikace přečtena). Při určitých událostech v jiných modulech se vytvoří záznam notifikace; například přidání nového receptu členem rodiny by mohlo vygenerovat notifikaci pro ostatní členy. Pro odesílání e-mailů se použije buď přímo funkce Django `send_mail` (napojená na SMTP server), nebo (pokud by notifikací bylo hodně a měly by se zpracovávat asynchronně) se zapojí fronta úloh pomocí Celery a Redis. Frontendová aplikace by v případě interních notifikací musela pravidelně dotazovat API nebo využít WebSockety/Django Channels pro real-time doručování zpráv.
+- **Plán priorit** – S implementací notifikací počítáme až po dokončení hlavních modulů a základního frontendu. Nejprve lze přidat jednoduché e-mailové upozornění (např. potvrzení registrace, uvítací e-mail novému uživateli, nebo reset hesla – tyto funkcionality částečně pokrývá django-allauth). Pokročilejší notifikace (např. zmíněné připomenutí či sdílené rodinné notifikace) přijdou na řadu v dalších iteracích, kdy bude jasné, jaké události jsou pro uživatele nejdůležitější.
+
+**Ukázkové dotazy na AI:**
+
+- "Navrhni, jak v Django aplikaci implementovat systém notifikací – jak by mohl vypadat model Notification a jaké služby/knihovny využít pro odesílání notifikací uživatelům."
+- "Jak odesílat e-mailové notifikace při určitých událostech v Django (např. potvrzení registrace, upozornění na blížící se událost) a jak nastavit email server v Django projektu?"
+- "Jak lze realizovat real-time notifikace v Django/React aplikaci (např. pomocí WebSockets a Django Channels pro doručování zpráv přímo do prohlížeče uživatele)?"
+
+## Testování a nasazení
+
+Pro zachování vysoké kvality kódu a bezproblémový růst projektu je nezbytné zavést testování a automatizaci nasazení již od brzké fáze vývoje. Tato oblast zahrnuje psaní testů, průběžnou integraci kódu a případně i kontinuální nasazování aplikace.
+
+- **Jednotkové a integrační testy** – Každá nová funkčnost by měla být doprovázena sadou testů, které ověří její správné chování. V kontextu backendu to znamená psát testy pro modely (např. že výpočet nějaké hodnoty nebo metoda modelu funguje správně) a pro API endpointy (např. že nepřihlášený uživatel nemůže vytvořit záznam, nebo že vytvoření ingredience vrací status 201 a skutečně přidá záznam do databáze). Django framework poskytuje vestavěný test runner a možnost využít knihovnu **pytest** pro pohodlnější zápis testů. Pro front-end část lze využít nástroje jako **Jest** a **React Testing Library** k testování komponent a logiky (např. ověřit, že komponenta pro přihlášení reaguje na vyplnění formuláře a volá API).
+- **Continuous Integration (CI)** – Zavedení CI nástroje (např. GitHub Actions, GitLab CI nebo Jenkins) pomůže automatizovat kontrolu kvality. Nastavíme proces, který při každém odeslání změn do repozitáře spustí všechny testy a případně další kontroly (linting, kontrola formátování kódu) a upozorní vývojáře na případné chyby. To zajistí, že se do hlavní větve kódu nepropasují chyby a že aplikace bude v každém okamžiku ve funkčním stavu. CI může také automaticky vytvářet build frontendu (kompilace React aplikace) pro účely nasazení.
+- **Nasazení a provoz (CD)** – V pokročilejší fázi se zaměříme na continuous deployment, tedy automatizované nasazení aplikace na produkční server nebo cloudovou službu. Pro začátek může být nasazení ruční (např. nahrání backendu na server a spuštění pod Gunicorn/Uvicorn + Nginx, a nasazení frontendu jako statických souborů nebo na Vercel/Netlify). Dlouhodobě však bude vhodné kontejnerizovat aplikaci (Docker) a využít CI pipeline, která po úspěšném průchodu testů automaticky nasadí novou verzi aplikace. Při nasazení je nutné řešit konfiguraci prostředí (tajné klíče, připojení k databázi, služby pro e-maily apod.) pomocí bezpečně uložených **environment variables** a zajistit škálovatelnost, pokud počet uživatelů poroste.
+- **Dokumentace a sledování verzí** – Nedílnou součástí profesionálního vývoje je udržování aktuální dokumentace. Každá významná změna by měla být zanesena do souboru **CHANGELOG.md** nebo jiného přehledu změn. Kromě toho je užitečné pravidelně generovat snapshoty zdrojového kódu (např. skriptem, který zabalí aktuální verzi projektu) a uchovávat je pro případ potřeby porovnání starších verzí. Využívání verzovacího systému **Git** je samozřejmostí; doporučuje se pracovat s větvemi pro jednotlivé funkce/opravy a ty pak slučovat do hlavní větve přes pull requesty s kódovou revizí.
+
+**Ukázkové dotazy na AI:**
+
+- "Jak napsat jednotkový test v Django REST Framework pro ověření registrace uživatele a přihlášení pomocí JWT?"
+- "Ukaž příklad nastavení GitHub Actions workflow tak, aby po každém push do repozitáře došlo ke spuštění testů Django aplikace."
+- "Jak nasadit Django REST backend a React frontend na produkční server – například na platformu Heroku nebo Railway – včetně nastavení databáze, statických souborů a potřebných proměnných prostředí?"

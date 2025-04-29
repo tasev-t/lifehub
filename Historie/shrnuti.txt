@@ -1,0 +1,141 @@
+Výborně! Vezmeme tvoji aktuální vizi projektu **LifeHub** a upravíme ji podle zkušeností z nejlepších osvědčených postupů z praxe, moderních technologií a optimálních workflow pro podobné projekty, abychom dosáhli maximální efektivity a kvality projektu.
+
+Nejprve shrnu, jak aktuálně vypadá tvoje základní myšlenka a struktura projektu:
+
+---
+
+## 🟢 **Tvoje původní myšlenka (shrnutí)**
+
+- **LifeHub** – modulární aplikace řešící každodenní potřeby:
+  - Strava (recepty, jídelníčky, nákupy)
+  - Uživatel a rodina (profil, sdílení dat)
+  - Finance (přehled příjmů, výdajů, plánování)
+  - Majetek (evidence, správa, dokumenty)
+  - Zvířata (péče, evidence, kalendář očkování apod.)
+- Jasné a přehledné uživatelské rozhraní (React frontend s Material UI)
+- Robustní backend (Django, Django REST Framework, JWT autentizace)
+- Modularita projektu a snadná rozšiřitelnost
+
+---
+
+## 🚩 **Klíčové oblasti, kde vidím prostor ke zlepšení:**
+
+### 1. **Zpřesnění struktury modulů**
+- Jasně definované rozhraní každého modulu (např. přes API gateway pattern)
+- Každý modul má jasně dané rozhraní a je zcela oddělen od ostatních
+- Centralizovaný systém správy uživatelů a oprávnění
+
+### 2. **Implementace centrálního Dashboardu (Zeď)** 
+- Vstupní dashboard (Zeď) jako aktivní centrum:
+  - Agreguje klíčové informace ze všech modulů
+  - Umožňuje rychlou navigaci
+  - Nabízí widgety (např. kalendář, rychlé poznámky, notifikace)
+- Personalizace dashboardu (volba widgetů dle uživatele)
+
+### 3. **Intuitivní a jednotné UX/UI**
+- Důraz na rychlou orientaci a minimalizaci kliknutí
+- Konzistence UX napříč moduly
+- Mobilní responsivita jako primární požadavek
+
+### 4. **Detailní audit bezpečnosti a autentizace**
+- Zavedení OAuth2.0 pro případné budoucí integrace se sociálními sítěmi
+- Dvoufaktorová autentizace (2FA) jako volitelná možnost
+
+### 5. **Inteligentní správa dat a analytika**
+- Implementace analýzy dat pro personalizaci doporučení (např. jídelníček dle preferencí, finanční rady dle chování uživatele)
+- Data-driven přístup (sběr a analýza dat pro další vývoj)
+
+### 6. **Rozšíření projektu o chytré notifikace a komunikaci**
+- Emailová upozornění
+- Notifikace v aplikaci
+- Integrace externích služeb (např. Google Kalendář, Google Drive)
+
+### 7. **Testovací strategie a CI/CD workflow**
+- Zavedení automatizovaných testů (unit, integration)
+- Continuous Integration a Continuous Deployment (např. GitHub Actions)
+
+### 8. **Efektivní práce s AI – Prompt engineering**
+- Každý bod obsahuje připravené prompty pro AI
+- Prompt templates, které můžeš přímo použít k zadání úkolů
+- Speciální sada promptů pro typické problémy (např. debugging, optimalizace databáze, testování, dokumentace)
+
+---
+
+## 🚀 **Vylepšená struktura a obsah dokumentu "Projekt 2.0 start (Enhanced)":**
+
+Navrhuji tedy vytvořit **detailně strukturovaný dokument**, který bude obsahovat následující hlavní části a body s podrobnými návody a prompty:
+
+### 📌 **Úvodní informace (Základní vize a koncept)**  
+- Stručný úvod projektu, cíle, vize
+
+### 🧩 **Technologický stack a nastavení prostředí**  
+- Frontend: React, Material UI, Axios  
+- Backend: Django, DRF, JWT  
+- Databáze: PostgreSQL / SQLite (vývojové prostředí)  
+- CI/CD, Git workflow
+
+### 🛠️ **Struktura backendu**
+- Modulární architektura (každý modul zvlášť)
+- Struktura modelů, API, views, serializers
+- Základní autentizace (JWT, 2FA, OAuth2)
+
+### 🌐 **Detailní struktura modulů**
+1. **Uživatel a Rodina**
+   - Registrace, autentizace, profil uživatele
+   - Rodinné skupiny, role, oprávnění, sdílení obsahu
+
+2. **Strava**
+   - Recepty, ingredience, jídelníčky, nákupní seznamy
+   - Pokročilé funkce: personalizované jídelníčky dle AI doporučení
+
+3. **Finance**
+   - Evidence příjmů a výdajů, reporting, predikce výdajů
+   - Připomínky plateb, inteligentní rady
+
+4. **Majetek**
+   - Evidence a správa majetku, dokumenty
+   - Automatická připomínka expirací (pojištění, servis, záruky)
+
+5. **Zvířata**
+   - Evidence mazlíčků, kalendář očkování, evidence veterinární péče
+   - Inteligentní upozornění na pravidelné činnosti
+
+### 📊 **Centrální Dashboard (Zeď)**
+- Návrh rozložení widgetů, UX/UI doporučení
+- Technické požadavky na API rozhraní k dashboardu
+
+### 🔒 **Bezpečnost a GDPR**
+- Kompletní checklist bezpečnosti
+- Implementace GDPR compliance checklist
+
+### 📈 **Inteligentní data a analytika**
+- Návrh systému sběru dat a personalizace aplikace
+
+### 📨 **Notifikace a komunikace**
+- Detailní technický popis implementace notifikací (interních i externích)
+
+### ⚙️ **Testovací a dokumentační strategie**
+- Plán testování, dokumentační best practices
+- Zavedení automatických testů a CI/CD
+
+### 🤖 **AI Prompt Guide (Speciální kapitola)**
+- Připravené **prompt templates** pro:
+  - Nastavení prostředí
+  - Debugging
+  - Vývoj modulů
+  - Databázové optimalizace
+  - Dokumentace a testování
+
+---
+
+## 📁 **Praktická využitelnost dokumentu:**
+- Dokument bude připraven tak, abys ho mohl kdykoliv vložit do nového chatu.
+- Po vložení dokumentu a snapshotu projektu řekneš jen „**BOD 3 prosím**“, AI okamžitě pochopí, jakou oblast řešíš, nabídne konkrétní řešení a doporučí správný prompt.
+
+---
+
+## 🎯 **Závěrečná kontrola pochopení tvého zadání:**
+
+Toto je má interpretace tvého zadání. Tvůj projekt jsem obohatil o své zkušenosti, doporučení a osvědčené postupy, čímž zajistíme jeho robustnost, modernost a maximální využití schopností AI. Vytvoříme detailní a zároveň prakticky použitelný plán, který výrazně usnadní práci s AI, zlepší strukturu a systematičnost tvého vývoje a pomůže efektivně realizovat tvou vizi projektu LifeHub.
+
+Pokud s touto interpretací souhlasíš, potvrď prosím, nebo případně ještě něco upřesni – ihned potom začnu pracovat na finálním dokumentu.

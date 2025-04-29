@@ -1,0 +1,38 @@
+Níže je ideální prompt, který můžete použít v dalším vlákně, aby byl vygenerován textový dokument shrnující naši spolupráci, vývoj projektu, řešené problémy a přijatá řešení, se strukturovanými sekcemi a závěrečným doporučením. Stačí tento prompt zadat a získáte výstup, který bude sloužit jako objektivní dokument historie vývoje vašeho projektu:
+
+---
+
+**Prompt:**
+
+Vytvoř mi textový dokument (v Markdown formátu) s následující strukturou a obsahem, který shrnuje naši spolupráci na projektu "LifeHub – Osobní životní asistent". Dokument by měl obsahovat:
+
+1. **Úvod**  
+   - Stručný popis cíle projektu: modulární webová aplikace pro osobní správu života, využívající REST API, kde jednotlivé doménové moduly (users, nutrition, finance, pets) spolu komunikují.
+   - Účel dokumentu – zaznamenat vývoj, řešené problémy a přijatá řešení, aby byla cesta vývoje transparentní a srozumitelná pro budoucí vývojáře.
+
+2. **Cíl projektu a postup spolupráce**  
+   - Popis hlavních milníků: vytvoření základního Django projektu s modulární strukturou, implementace samostatných aplikací (users, nutrition, finance, pets, common), nastavení JWT autentizace, integrace frontendu a automatizace pomocí .bat skriptů.
+   - Jaké kroky byly podniknuty v průběhu spolupráce.
+
+3. **Hlavní řešené problémy a jejich řešení**  
+   - Uveď konkrétní problémy, se kterými jsme se setkali, například:
+     - Problém s příkazem "django-admin" nebyl rozpoznán – řešení: vytvoření a aktivace virtuálního prostředí, instalace Django pomocí pip.
+     - Chyby při importech view a prázdné URL konfigurace v souborech (např. v finance/urls.py a pets/urls.py) – řešení: definice platných `urlpatterns`.
+     - Problémy se spouštěním .bat skriptů – řešení: vytvoření skriptů, které ověřují dostupnost Pythonu, nastavují správný adresář a spouštějí příkazy (makemigrations, migrate, runserver).
+     - Integrace endpointu pro changelog v aplikaci common – načtení obsahu souboru CHANGELOG.md a jeho vrácení jako JSON.
+     
+4. **Doporučení ke zlepšení a využití historie spolupráce**  
+   - Zdůrazni význam průběžné dokumentace (např. soubory CHANGELOG.md, Project_History.txt, README.md).
+   - Navrhni integraci dynamických endpointů, které umožní přístup k historii změn přímo z aplikace.
+   - Uveď možnost automatizovaného generování changelogu pomocí verzovacího systému a CI/CD pipeline.
+   - Doporučení, jak taková dokumentace usnadní onboarding nových členů týmu a udržitelnost projektu.
+
+5. **Závěr a konečné doporučení**  
+   - Shrň, proč je tento dokument cenný pro projekt: zvýšení transparentnosti, zlepšení komunikace a usnadnění budoucího rozvoje.
+   - Uveď, že pravidelná aktualizace a systematická dokumentace přispěje k efektivní spolupráci a úspěšnému vývoji.
+
+Vyprodukuj prosím takový dokument, který bude sloužit jako objektivní záznam historie spolupráce, s jasně oddělenými sekcemi a detailním popisem řešených problémů, přijatých řešení a doporučení pro další rozvoj projektu.
+
+---
+
+Tento prompt by měl zajistit, že výstupní dokument bude kompletní a přehledný, což ti pomůže udržet kontext a sledovat vývoj projektu napříč různými vlákny spolupráce. Pokud potřebuješ další úpravy nebo specifikace, dej vědět!

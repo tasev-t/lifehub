@@ -52,8 +52,8 @@ jobs:
       - name: Run snapshot generator
         run: python snapshot_generator.py
 
-      - name: Save snapshot artifact
-        uses: actions/upload-artifact@v2
+      - name: Save snapshot artifact (alternative action)
+        uses: actions-ecosystem/action-upload-artifact@v1
         with:
           name: snapshot
           path: snapshots/
@@ -62,7 +62,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: backend
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Build Docker image
         run: docker build -t lifehub-backend:latest .
@@ -71,7 +71,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: backend
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Generate changelog
         run: |
@@ -79,8 +79,8 @@ jobs:
           echo "" >> CHANGELOG.md
           git log -5 --pretty=format:"- %s (%an)" --skip=1 >> CHANGELOG.md
 
-      - name: Upload changelog
-        uses: actions/upload-artifact@v2
+      - name: Upload changelog (alternative action)
+        uses: actions-ecosystem/action-upload-artifact@v1
         with:
           name: changelog
           path: CHANGELOG.md

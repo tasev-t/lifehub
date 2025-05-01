@@ -52,12 +52,6 @@ jobs:
       - name: Run snapshot generator
         run: python snapshot_generator.py
 
-      - name: Save snapshot artifact (alternative action)
-        uses: actions-ecosystem/action-upload-artifact@v1
-        with:
-          name: snapshot
-          path: snapshots/
-
   docker:
     runs-on: ubuntu-latest
     needs: backend
@@ -78,9 +72,3 @@ jobs:
           git log -1 --pretty=format:"## %h - %s (%an, %ad)" --date=short > CHANGELOG.md
           echo "" >> CHANGELOG.md
           git log -5 --pretty=format:"- %s (%an)" --skip=1 >> CHANGELOG.md
-
-      - name: Upload changelog (alternative action)
-        uses: actions-ecosystem/action-upload-artifact@v1
-        with:
-          name: changelog
-          path: CHANGELOG.md

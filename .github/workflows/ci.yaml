@@ -39,12 +39,10 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run database migrations
-        run: |
-          python manage.py migrate
+        run: python manage.py migrate
 
       - name: Run tests
-        run: |
-          pytest -q
+        run: pytest -q
 
       - name: Validate OpenAPI file
         run: |
@@ -52,8 +50,7 @@ jobs:
           openapi-spec-validator docs/openapi.yaml
 
       - name: Run snapshot generator
-        run: |
-          python snapshot_generator.py
+        run: python snapshot_generator.py
 
       - name: Save snapshot artifact
         uses: actions/upload-artifact@v3
@@ -67,18 +64,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Log in to GitHub Container Registry (optional)
-        run: echo "skip login unless pushing to GHCR"
-
       - name: Build Docker image
         run: docker build -t lifehub-backend:latest .
-
-              - name: Save image as artifact (optional)
-        uses: actions/upload-artifact@v3
-        with:
-          name: docker-image
-          path: /tmp/docker-image.tar
-        if: false  # změnit na true pro uložení tarballu
 
   changelog:
     runs-on: ubuntu-latest

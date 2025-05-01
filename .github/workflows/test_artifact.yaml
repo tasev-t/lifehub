@@ -1,0 +1,21 @@
+name: Test upload-artifact
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-artifact-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Create test file
+        run: echo "Toto je test soubor pro upload-artifact" > test_output.txt
+
+      - name: Upload test artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-artifact
+          path: test_output.txt

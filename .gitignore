@@ -1,0 +1,18 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+
+# Django database
+db.sqlite3
+
+# Bat scripts and snapshots
+*.bat
+snapshots/
+
+# VSCode, JetBrains
+.vscode/
+.idea/
+
+# Node modules / build
+lifehub-frontend/node_modules/
+lifehub-frontend/build/

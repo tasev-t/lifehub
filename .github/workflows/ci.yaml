@@ -24,7 +24,8 @@ jobs:
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -41,6 +42,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y netcat-openbsd netcat-traditional
           until nc -z localhost 5432; do sleep 1; done
+          echo "✅ Postgres is up!"
 
       - name: Run migrations
         run: python manage.py migrate
@@ -48,7 +50,7 @@ jobs:
       - name: Run backend tests
         run: pytest -q
 
-      - name: Build Docker image
+      - name: Build backend Docker image
         run: docker build -t lifehub-backend .
 
   frontend:
@@ -56,7 +58,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v3

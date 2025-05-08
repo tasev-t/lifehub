@@ -1,5 +1,4 @@
-# .github/workflows/ci.yml (nový čistý soubor)
-
+# .github/workflows/ci.yaml
 name: CI
 
 on:
@@ -21,13 +20,13 @@ jobs:
           POSTGRES_DB: test_db
         ports:
           - 5432:5432
-        # BEZ healthcheck!
 
     env:
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -42,9 +41,9 @@ jobs:
       - name: Wait for PostgreSQL to start
         run: |
           sudo apt-get update
-          sudo apt-get install -y netcat
+          sudo apt-get install -y netcat-openbsd
           until nc -z localhost 5432; do sleep 1; done
-          echo "✅ Postgres běží!"
+          echo "✅ Postgres is up!"
 
       - name: Run migrations
         run: python manage.py migrate
@@ -56,28 +55,29 @@ jobs:
         run: docker build -t lifehub-backend .
 
   frontend:
-    runs-on: ubuntu-latest
     needs: backend
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Install dependencies
+      - name: Install frontend dependencies
         run: |
-          cd lifehub-ui
+          cd lifehub-frontend
           npm ci
 
       - name: Run frontend tests
         run: |
-          cd lifehub-ui
+          cd lifehub-frontend
           npm test -- --watchAll=false
 
       - name: Build frontend
         run: |
-          cd lifehub-ui
+          cd lifehub-frontend
           npm run build

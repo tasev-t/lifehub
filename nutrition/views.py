@@ -3,7 +3,11 @@ from .models import Recipe, Ingredient, MealPlan
 from .serializers import RecipeSerializer, IngredientSerializer, MealPlanSerializer
 
 # —————— Recipe ——————
-class RecipeListView(generics.ListAPIView):
+class RecipeListCreateView(generics.ListCreateAPIView):
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
+
+class RecipeDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
 

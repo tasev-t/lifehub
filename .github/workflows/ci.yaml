@@ -2,21 +2,65 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   backend:
     runs-on: ubuntu-latest
-    … # (jak jste už měli)
+
+    services:
+      db:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install backend dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Wait for PostgreSQL to start
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y netcat-openbsd netcat-traditional
+          until nc -z localhost 5432; do sleep 1; done
+
+      - name: Run migrations
+        run: python manage.py migrate
+
+      - name: Run backend tests
+        run: pytest -q
+
+      - name: Build backend Docker image
+        run: docker build -t lifehub-backend .
 
   frontend:
     needs: backend
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
